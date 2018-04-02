@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.david_kapas.android.techtest.presentation.details.viewmodel.PostDetailsViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:id="@+id/user_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/my_image_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:failureImage="@mipmap/not_available"
+                app:imageUrl="@{viewModel.avatarUrl}"
+                app:viewAspectRatio="1.33"
+                fresco:fadeDuration="300" />
+
+            <TextView
+                android:id="@+id/post_details_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_image_view"
+                android:text="@{viewModel.postDetails.userName}" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/post_details_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/user_layout"
+            android:paddingStart="7dp"
+            android:text="@{viewModel.postDetails.title}"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/post_details_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_details_title"
+            android:layout_toRightOf="@+id/user_layout"
+            android:paddingStart="14dp"
+            android:text="@{viewModel.postDetails.body}"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_details_body"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_comments_label" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(viewModel.numberOfComments)}" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

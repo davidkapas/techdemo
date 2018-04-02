@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TechTest</string>
+    <string name="post_details_toolbar_name">Post Details</string>
+    <string name="number_of_comments_label">Number of comments: </string>
+    <string name="network_error_title">Sorry, unable to connect</string>
+    <string name="network_error_message">Please check your connection and try again.</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerView">
+        <attr name="source" format="string" />
+        <attr name="itemLayout" format="string" />
+        <attr name="columns" format="string" />
+        <attr name="itemSpacing" format="string" />
+        />
+    </declare-styleable>
+    <declare-styleable name="SimpleDraweeView">
+        <attr name="imageUrl" format="string" />
+    </declare-styleable>
+</resources>
