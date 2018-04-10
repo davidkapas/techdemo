@@ -18,4 +18,5 @@ Used technologies/libraries:
 - Room
 - Dagger 2
 - Fresco
+- Databinding
 - JUnit, Mockito, Robolectric
