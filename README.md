@@ -11,6 +11,7 @@ Show the post details: title, description, number of comments and the avatar of 
 
 Architecture:
 - MVVM+R(outer)
+
 Used technologies/libraries:
 - Retrofit
 - RxJava, RxAndroid
