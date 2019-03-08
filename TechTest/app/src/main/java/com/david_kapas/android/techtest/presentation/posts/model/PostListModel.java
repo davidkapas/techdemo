@@ -8,9 +8,9 @@ import com.david_kapas.android.techtest.logic.api.PostsApi;
 import com.david_kapas.android.techtest.logic.api.UsersApi;
 import com.david_kapas.android.techtest.logic.api.model.Post;
 import com.david_kapas.android.techtest.logic.api.model.PostAndUser;
+import com.david_kapas.android.techtest.logic.api.model.User;
 import com.david_kapas.android.techtest.logic.dao.PostDao;
 import com.david_kapas.android.techtest.logic.dao.UserDao;
-import com.david_kapas.android.techtest.logic.api.model.User;
 import com.david_kapas.android.techtest.presentation.common.model.BaseModel;
 
 import java.util.ArrayList;
@@ -34,6 +34,8 @@ public class PostListModel extends BaseModel {
     private UserDao userDao;
 
     private MutableLiveData<PostAndUserEntity> postAndUserEntityMutableLiveData = new MutableLiveData<>();
+    private Observable<List<Post>> postObservable;
+    private Observable<List<User>> userObservable;
 
     public PostListModel(PostsApi api, PostDao postDao, UsersApi usersApi, UserDao userDao) {
         this.postsApi = api;
@@ -42,18 +44,20 @@ public class PostListModel extends BaseModel {
         this.userDao = userDao;
     }
 
-    public void getPosts(boolean forceUpdate) {
-        if (postAndUserEntityMutableLiveData.getValue() == null || forceUpdate) {
+    public void getPosts() {
+        if (postAndUserEntityMutableLiveData.getValue() == null) {
             // the proper repository pattern not implemented due to short time frame, although the model class would be more testable
-            Observable<List<Post>> postObservable = postsApi.getPosts().subscribeOn(Schedulers.newThread())
+            postObservable = postsApi.getPosts().subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doAfterNext(this::storePostNetworkResponseInDb);
-            Observable<List<User>> userObservable = usersApi.getUsers().subscribeOn(Schedulers.newThread())
+            userObservable = usersApi.getUsers().subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doAfterNext(this::storeUserNetworkResponseInDb);
-            getPostsAndUsers(postObservable, userObservable);
+            getPostsAndUsers();
         }
     }
 
-    private void getPostsAndUsers(Observable<List<Post>> postObservable, Observable<List<User>> userObservable) {
+    private void getPostsAndUsers() {
         Observable.zip(postObservable, userObservable, (posts, users) -> {
             List<PostAndUser> list = new ArrayList<>();
             for (Post post : posts) {
@@ -61,7 +65,7 @@ public class PostListModel extends BaseModel {
                 list.add(new PostAndUser(post, currentUser));
             }
             return list;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(this::onResult, this::onError);
+        }).subscribe(this::onResult, this::onError);
     }
 
     private void onError(Throwable throwable) {

@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.david_kapas.android.techtest.R;
 import com.david_kapas.android.techtest.databinding.ActivityPostDetailsBinding;
-import com.david_kapas.android.techtest.di.components.PostDetailsActivityComponent;
 import com.david_kapas.android.techtest.presentation.details.viewmodel.PostDetailsViewModel;
 
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 /**
  * Main screen for showing post details.
@@ -29,8 +30,9 @@ public class PostDetailsActivity extends AppCompatActivity implements PostDetail
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        inject();
+        //inject();
         ActivityPostDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_post_details);
         binding.setViewModel(postDetailsViewModel);
         if (getIntent() != null) {
@@ -42,12 +44,12 @@ public class PostDetailsActivity extends AppCompatActivity implements PostDetail
 
     }
 
-    private void inject() {
+    /*  private void inject() {
         if (!injected) {
             PostDetailsActivityComponent.Injector.buildComponent(this).inject(this);
             injected = true;
         }
-    }
+    }*/
 
     @Override
     public void showGeneralErrorDialog() {

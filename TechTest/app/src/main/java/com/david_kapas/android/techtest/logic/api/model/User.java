@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
  */
 @Entity(primaryKeys = {"id"})
 public class User {
-
     @NonNull
     private int id;
     private String name;

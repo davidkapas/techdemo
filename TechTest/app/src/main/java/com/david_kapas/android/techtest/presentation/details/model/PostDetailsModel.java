@@ -39,9 +39,9 @@ public class PostDetailsModel extends BaseModel {
     }
 
     public void showPostOverview(int postId) {
-        Maybe<Post> postSource = postDao.getPostById(postId).subscribeOn(Schedulers.io());
+        Maybe<Post> postSource = postDao.getPostById(postId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         Maybe<User> userSource = postSource
-                .flatMap(post -> userDao.getUserById(post.getUserId()).subscribeOn(Schedulers.io()));
+                .flatMap(post -> userDao.getUserById(post.getUserId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()));
         Maybe.zip(postSource, userSource, (post, user) -> {
             PostDetails postDetails = new PostDetails();
             postDetails.setPostId(post.getId());
@@ -50,7 +50,7 @@ public class PostDetailsModel extends BaseModel {
             postDetails.setUserName(user.getName());
             postDetails.setUserEmail(user.getEmail());
             return postDetails;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(this::onPostAndUserData, this::onPostAndUserError);
+        }).subscribe(this::onPostAndUserData, this::onPostAndUserError);
 
     }
 

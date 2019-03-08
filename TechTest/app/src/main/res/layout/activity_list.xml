@@ -10,32 +10,23 @@
             type="com.david_kapas.android.techtest.presentation.posts.viewmodel.PostsViewModel" />
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:onRefreshListener="@{() -> viewModel.onRefresh()}"
-        app:refreshing="@{viewModel.isLoading}">
+        android:orientation="vertical"
+        tools:context=".presentation.posts.router.ListActivity">
 
-
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/post_list_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".presentation.posts.router.ListActivity">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/post_list_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="10dp"
-                app:columns="@{@integer/column_number}"
-                app:itemLayout="@{@layout/post_list_item}"
-                app:itemSpacing="@{@dimen/single_padding}"
-                app:source="@{viewModel.postList}" />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            app:columns="@{@integer/column_number}"
+            app:itemLayout="@{@layout/post_list_item}"
+            app:itemSpacing="@{@dimen/single_padding}"
+            app:source="@{viewModel.postList}" />
 
 
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 </layout>

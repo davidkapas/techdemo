@@ -27,7 +27,6 @@ public class PostsViewModel extends BaseObservable {
     private final Provider<PostListItemViewModel> postListItemViewModelProvider;
     private final PostListRouter router;
     private List<ListItemViewModel> postList = new ArrayList<>();
-    private boolean isLoading;
 
     public PostsViewModel(PostListModel model, PostListRouter router, Provider<PostListItemViewModel> postListItemViewModelProvider) {
         this.model = model;
@@ -42,7 +41,6 @@ public class PostsViewModel extends BaseObservable {
     }
 
     private void onPostListModel(PostAndUserEntity postAndUserEntity) {
-        setLoading(false);
         if (postAndUserEntity.isError()) {
             // the extended error handling not implemented due to short time frame
             router.showGeneralErrorDialog();
@@ -51,13 +49,8 @@ public class PostsViewModel extends BaseObservable {
         }
     }
 
-    public void onRefresh() {
-        setLoading(true);
-        getAllPosts(true);
-    }
-
-    public void getAllPosts(boolean forceUpdate) {
-        model.getPosts(forceUpdate);
+    public void getAllPosts() {
+        model.getPosts();
     }
 
     private List<ListItemViewModel> toItemViewModels(List<PostAndUser> postAndUsers) {
@@ -72,16 +65,6 @@ public class PostsViewModel extends BaseObservable {
     @Bindable
     public List<ListItemViewModel> getPostList() {
         return postList;
-    }
-
-    @Bindable
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    public void setLoading(boolean loading) {
-        isLoading = loading;
-        notifyPropertyChanged(BR.loading);
     }
 
     public void setPostList(List<ListItemViewModel> list) {

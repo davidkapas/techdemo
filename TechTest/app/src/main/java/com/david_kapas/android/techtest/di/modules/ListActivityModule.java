@@ -16,8 +16,6 @@ import com.david_kapas.android.techtest.presentation.posts.router.PostListRouter
 import com.david_kapas.android.techtest.presentation.posts.viewmodel.PostListItemViewModel;
 import com.david_kapas.android.techtest.presentation.posts.viewmodel.PostsViewModel;
 
-import java.lang.ref.WeakReference;
-
 import javax.inject.Provider;
 
 import dagger.Module;
@@ -30,29 +28,16 @@ import dagger.Provides;
 @Module
 public class ListActivityModule {
 
-    private final WeakReference<ListActivity> activity;
-
-    public ListActivityModule(ListActivity listActivity) {
-        this.activity = new WeakReference<>(listActivity);
+    @Provides
+    @PerActivity
+    PostListRouter providePostListRouter(ListActivity listActivity) {
+        return listActivity;
     }
 
     @Provides
     @PerActivity
-    PostListRouter providePostListRouter() {
-        return activity.get();
-    }
-
-    @Provides
-    @PerActivity
-    PostListModel providePostListModel(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
-        final ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new PostListModel(postsApi, postDao, usersApi, userDao);
-            }
-        };
-        return ViewModelProviders.of(activity.get(), factory).get(PostListModel.class);
+    PostListModel providePostListModel(ListActivity listActivity, ValamiFactory valamiFactory) {
+        return ViewModelProviders.of(listActivity, valamiFactory).get(PostListModel.class);
     }
 
     @Provides
@@ -61,8 +46,36 @@ public class ListActivityModule {
     }
 
     @Provides
+    ValamiFactory provideValamiFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
+        return new ValamiFactory(postsApi, postDao, usersApi, userDao);
+    }
+
+    @Provides
     @PerActivity
-    PostsViewModel providePostsViewModel(PostListModel postListModel, PostListRouter router, Provider<PostListItemViewModel> postListItemViewModelProvider) {
+    PostsViewModel providePostsViewModel(PostListModel postListModel, PostListRouter router,
+            Provider<PostListItemViewModel> postListItemViewModelProvider) {
         return new PostsViewModel(postListModel, router, postListItemViewModelProvider);
     }
+
+    public class ValamiFactory implements ViewModelProvider.Factory {
+
+        private PostsApi postsApi;
+        private PostDao postDao;
+        private UsersApi usersApi;
+        private UserDao userDao;
+
+        public ValamiFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
+            this.postsApi = postsApi;
+            this.postDao = postDao;
+            this.usersApi = usersApi;
+            this.userDao = userDao;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            return (T) new PostListModel(postsApi, postDao, usersApi, userDao);
+        }
+    }
+
 }
