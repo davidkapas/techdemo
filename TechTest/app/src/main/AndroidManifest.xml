@@ -34,6 +34,7 @@
             android:name=".presentation.details.router.PostDetailsActivity"
             android:label="@string/post_details_toolbar_name"
             android:parentActivityName=".presentation.posts.router.ListActivity" />
+
     </application>
 
 </manifest>

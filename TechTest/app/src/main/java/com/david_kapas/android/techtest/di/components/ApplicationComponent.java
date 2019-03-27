@@ -21,20 +21,6 @@ import dagger.android.AndroidInjectionModule;
 @Component(modules = {ActivityBuilder.class, ApplicationModule.class, ApiModule.class, AndroidInjectionModule.class})
 public interface ApplicationComponent {
 
-    /*PostsApi providePostApi();
-    
-    CommentsApi provideCommentsApi();
-    
-    UsersApi provideUsersApi();
-    
-    Application application();
-    
-    Resources resources();
-    
-    PostDao providePostDao();
-    
-    UserDao provideUserDao();*/
-
     @Component.Builder
     interface Builder {
         @BindsInstance

@@ -5,11 +5,9 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.david_kapas.android.techtest.logic.api.model.Post;
 import com.david_kapas.android.techtest.logic.api.model.PostAndUser;
 import com.david_kapas.android.techtest.logic.api.model.User;
 import com.david_kapas.android.techtest.presentation.posts.model.PostAndUserEntity;
-import com.david_kapas.android.techtest.presentation.posts.model.PostListModel;
 import com.david_kapas.android.techtest.presentation.posts.router.PostListRouter;
 
 import org.junit.Before;

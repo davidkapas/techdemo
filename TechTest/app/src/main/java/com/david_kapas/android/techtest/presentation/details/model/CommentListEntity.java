@@ -1,7 +1,6 @@
 package com.david_kapas.android.techtest.presentation.details.model;
 
 import com.david_kapas.android.techtest.logic.api.model.Comment;
-import com.david_kapas.android.techtest.logic.api.model.Post;
 
 import java.util.List;
 

@@ -17,6 +17,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import static com.david_kapas.android.techtest.logic.api.CommentsApiKt.BASE_URL;
+import static com.david_kapas.android.techtest.logic.api.PostsApiKt.POST_BASE_URL;
+
 /**
  * ApiModule for the provide any api dependency.
  * Created by David Kapas on 2018.03.17.
@@ -29,7 +32,7 @@ public class ApiModule {
     @Singleton
     PostsApi providePostsApi(Converter.Factory converterFactory, OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(PostsApi.BASE_URL)
+                .baseUrl(POST_BASE_URL)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -41,7 +44,7 @@ public class ApiModule {
     @Singleton
     CommentsApi provideCommentsApi(Converter.Factory converterFactory, OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(PostsApi.BASE_URL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -53,7 +56,7 @@ public class ApiModule {
     @Singleton
     UsersApi provideUsersApi(Converter.Factory converterFactory, OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(PostsApi.BASE_URL)
+                .baseUrl(POST_BASE_URL)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)

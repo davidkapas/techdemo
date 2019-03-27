@@ -19,7 +19,7 @@ public class ImageUtilTest {
 
     @Test
     public void tesEmail() {
-        String avatarUrl = ImageUtil.createAvatarImageUrl(TEST_EMAIL);
+        String avatarUrl = ImageUtil.INSTANCE.createAvatarImageUrl(TEST_EMAIL);
         Assert.assertEquals(AVATAR_BASE_URL + TEST_EMAIL + IMAGE_FORMAT, avatarUrl);
     }
 }

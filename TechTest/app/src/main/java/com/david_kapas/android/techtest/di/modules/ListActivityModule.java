@@ -36,8 +36,8 @@ public class ListActivityModule {
 
     @Provides
     @PerActivity
-    PostListModel providePostListModel(ListActivity listActivity, ValamiFactory valamiFactory) {
-        return ViewModelProviders.of(listActivity, valamiFactory).get(PostListModel.class);
+    PostListModel providePostListModel(ListActivity listActivity, PostListModelFactory postListModelFactory) {
+        return ViewModelProviders.of(listActivity, postListModelFactory).get(PostListModel.class);
     }
 
     @Provides
@@ -46,25 +46,25 @@ public class ListActivityModule {
     }
 
     @Provides
-    ValamiFactory provideValamiFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
-        return new ValamiFactory(postsApi, postDao, usersApi, userDao);
+    PostListModelFactory providePostListModelFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
+        return new PostListModelFactory(postsApi, postDao, usersApi, userDao);
     }
 
     @Provides
     @PerActivity
     PostsViewModel providePostsViewModel(PostListModel postListModel, PostListRouter router,
-            Provider<PostListItemViewModel> postListItemViewModelProvider) {
+                                         Provider<PostListItemViewModel> postListItemViewModelProvider) {
         return new PostsViewModel(postListModel, router, postListItemViewModelProvider);
     }
 
-    public class ValamiFactory implements ViewModelProvider.Factory {
+    public class PostListModelFactory implements ViewModelProvider.Factory {
 
         private PostsApi postsApi;
         private PostDao postDao;
         private UsersApi usersApi;
         private UserDao userDao;
 
-        public ValamiFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
+        public PostListModelFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
             this.postsApi = postsApi;
             this.postDao = postDao;
             this.usersApi = usersApi;

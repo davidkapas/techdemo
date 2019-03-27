@@ -2,12 +2,7 @@ package com.david_kapas.android.techtest.presentation.posts.model;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.david_kapas.android.techtest.logic.api.PostsApi;
-import com.david_kapas.android.techtest.logic.api.UsersApi;
-import com.david_kapas.android.techtest.logic.api.model.Post;
 import com.david_kapas.android.techtest.logic.api.model.User;
-import com.david_kapas.android.techtest.logic.dao.PostDao;
-import com.david_kapas.android.techtest.logic.dao.UserDao;
 
 import junit.framework.Assert;
 
