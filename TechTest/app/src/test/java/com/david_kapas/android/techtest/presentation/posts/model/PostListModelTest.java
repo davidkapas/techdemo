@@ -2,7 +2,12 @@ package com.david_kapas.android.techtest.presentation.posts.model;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.david_kapas.android.techtest.logic.api.PostsApi;
+import com.david_kapas.android.techtest.logic.api.UsersApi;
+import com.david_kapas.android.techtest.logic.api.model.Post;
 import com.david_kapas.android.techtest.logic.api.model.User;
+import com.david_kapas.android.techtest.logic.dao.PostDao;
+import com.david_kapas.android.techtest.logic.dao.UserDao;
 
 import junit.framework.Assert;
 
@@ -120,7 +125,7 @@ public class PostListModelTest {
 
         Assert.assertEquals(false, postAndUserEntity.isError());
         Assert.assertEquals(2, postAndUserEntity.getPostAndUsers().size());
-        Assert.assertEquals(POST_ID_1, postAndUserEntity.getPostAndUsers().get(0).getPost().getId());
+        Assert.assertEquals(Integer.valueOf(POST_ID_1), postAndUserEntity.getPostAndUsers().get(0).getPost().getId());
         Assert.assertEquals(USER_1_EMAIL, postAndUserEntity.getPostAndUsers().get(0).getUser().getEmail());
         Assert.assertEquals(USER_2_EMAIL, postAndUserEntity.getPostAndUsers().get(1).getUser().getEmail());
         Assert.assertEquals(POST_TITLE + POST_ID_2, postAndUserEntity.getPostAndUsers().get(1).getPost().getTitle());

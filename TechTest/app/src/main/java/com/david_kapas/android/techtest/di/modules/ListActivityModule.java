@@ -2,7 +2,6 @@ package com.david_kapas.android.techtest.di.modules;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 
 import com.david_kapas.android.techtest.di.scopes.PerActivity;
@@ -11,8 +10,6 @@ import com.david_kapas.android.techtest.logic.api.UsersApi;
 import com.david_kapas.android.techtest.logic.dao.PostDao;
 import com.david_kapas.android.techtest.logic.dao.UserDao;
 import com.david_kapas.android.techtest.presentation.posts.model.PostListModel;
-import com.david_kapas.android.techtest.presentation.posts.router.ListActivity;
-import com.david_kapas.android.techtest.presentation.posts.router.PostListRouter;
 import com.david_kapas.android.techtest.presentation.posts.viewmodel.PostListItemViewModel;
 import com.david_kapas.android.techtest.presentation.posts.viewmodel.PostsViewModel;
 
@@ -30,51 +27,34 @@ public class ListActivityModule {
 
     @Provides
     @PerActivity
-    PostListRouter providePostListRouter(ListActivity listActivity) {
-        return listActivity;
+    PostListModel providePostListModel(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
+        return new PostListModel(postsApi, postDao, usersApi, userDao);
     }
 
     @Provides
-    @PerActivity
-    PostListModel providePostListModel(ListActivity listActivity, PostListModelFactory postListModelFactory) {
-        return ViewModelProviders.of(listActivity, postListModelFactory).get(PostListModel.class);
+    PostListItemViewModel providePostListItemViewModel() {
+        return new PostListItemViewModel();
     }
 
     @Provides
-    PostListItemViewModel providePostListItemViewModel(PostListRouter router) {
-        return new PostListItemViewModel(router);
+    PostViewModelFactory providePostViewModelFactory(PostListModel postListModel, Provider<PostListItemViewModel> postListItemViewModelProvider) {
+        return new PostViewModelFactory(postListModel, postListItemViewModelProvider);
     }
 
-    @Provides
-    PostListModelFactory providePostListModelFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
-        return new PostListModelFactory(postsApi, postDao, usersApi, userDao);
-    }
+    public class PostViewModelFactory implements ViewModelProvider.Factory {
 
-    @Provides
-    @PerActivity
-    PostsViewModel providePostsViewModel(PostListModel postListModel, PostListRouter router,
-                                         Provider<PostListItemViewModel> postListItemViewModelProvider) {
-        return new PostsViewModel(postListModel, router, postListItemViewModelProvider);
-    }
+        private PostListModel postListModel;
+        private Provider<PostListItemViewModel> postListItemViewModelProvider;
 
-    public class PostListModelFactory implements ViewModelProvider.Factory {
-
-        private PostsApi postsApi;
-        private PostDao postDao;
-        private UsersApi usersApi;
-        private UserDao userDao;
-
-        public PostListModelFactory(PostsApi postsApi, PostDao postDao, UsersApi usersApi, UserDao userDao) {
-            this.postsApi = postsApi;
-            this.postDao = postDao;
-            this.usersApi = usersApi;
-            this.userDao = userDao;
+        public PostViewModelFactory(PostListModel postListModel, Provider<PostListItemViewModel> postListItemViewModelProvider) {
+            this.postListModel = postListModel;
+            this.postListItemViewModelProvider = postListItemViewModelProvider;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new PostListModel(postsApi, postDao, usersApi, userDao);
+            return (T) new PostsViewModel(postListModel, postListItemViewModelProvider);
         }
     }
 

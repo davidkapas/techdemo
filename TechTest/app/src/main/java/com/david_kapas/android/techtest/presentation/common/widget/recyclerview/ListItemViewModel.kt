@@ -14,6 +14,8 @@ abstract class ListItemViewModel : BaseObservable() {
 
     var spanSize: Int = DEFAULT_GRID_SIZE;
 
+    var listItemViewModelOnClick: ListItemViewModelOnClick? = null
+
     abstract fun getViewType(): Int;
 
     fun areItemsTheSame(newItem: ListItemViewModel): Boolean {
@@ -22,5 +24,9 @@ abstract class ListItemViewModel : BaseObservable() {
 
     fun applyDiff(itemViewModel: ListItemViewModel): Boolean {
         return false;
+    }
+
+    fun onClick() {
+        listItemViewModelOnClick?.onClick(this);
     }
 }
